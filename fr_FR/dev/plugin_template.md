@@ -16,12 +16,12 @@ Voici sa structure: tout d’abord un dossier du nom de votre plugin (son identi
   -   ``js`` : dossier contenant tous les fichiers de type javascript
   -   ``php`` : dossier contenant tous les fichiers de type php qui font de l’affichage
   -   ``css`` : il n’y en pas ici mais, si besoin, tous les fichiers css du plugin vont dedans
-  -   ``modal`` : dossier contenant le code des modals du plugin
+  -   ``modal`` : dossier contenant le code des popups modales du plugin
 - ``plugin_info`` : contient les fichiers permettant à Jeedom de qualifier le plugin, de faire son installation et sa configuration
-  -   ``info.json`` : fichier contenant les informations de base du plugin (il est obligatoire sinon Jeedom ne verra pas le plugin), il contient entre autre l’identifiant du module, la description, les instructions d’installation…​
+  -   ``info.json`` : fichier contenant les informations de base du plugin (il est obligatoire sinon Jeedom ne verra pas le plugin), il contient entre autres l’identifiant du module, la description, les instructions d’installation…​
   -   ``install.php`` : fichier contenant (si besoin) les méthodes d’installation et de désinstallation du plugin
   -   ``configuration.php`` : fichier contenant les paramètres à configurer du plugin indépendants des équipements de celui-ci (exemple pour le module Zwave l’ip du Raspberry Pi ayant la carte Razberry)
-- ``docs`` : doit contenir la doc du plugin au format markdown, la racine et le fichier index.md. Toutes les images sont dans docs/images. La doc elle-même est dans un dossier en fonction de la langue (ex en francais : ``docs/fr\_FR``)
+- ``docs`` : doit contenir la documentation du plugin au format Markdown, la racine et le fichier index.md. Toutes les images sont dans docs/images. La documentation elle-même est dans un dossier en fonction de la langue (ex en français : ``docs/fr\_FR``)
 
 Pour ce qui est de la convention de nommage des fichiers voici les
 impératifs :
@@ -49,10 +49,10 @@ Fichier donnant les instructions d’installation d’un plugin :
 
 Il est composé de la manière suivante :
 
-La première partie commentée contient la licence (c’est mieux). Celle utilisée ici indique que le fichier appartient à Jeedom et qu’il est open source Ensuite vient l’inclusion du core de Jeedom (cela permet d’accéder aux fonctions internes) Ensuite viennent les 2 fonctions :
+La première partie commentée contient la licence (c’est mieux). Celle utilisée ici indique que le fichier appartient à Jeedom et qu’il est open source. Ensuite vient l’inclusion du core de Jeedom (cela permet d’accéder aux fonctions internes). Ensuite viennent les 2 fonctions :
 
 - ``pluginid_install()`` : méthode permettant d’installer le plugin. Ici l’installation ajoute une tâche cron à Jeedom
-- ``pluginid_update()`` : méthode permettant d’installer le plugin. Utilisé ici pour redémarrer la tache cron
+- ``pluginid_update()`` : méthode permettant d’installer le plugin. Utilisée ici pour redémarrer la tâche cron
 - ``pluginid_remove()`` : méthode permettant de supprimer le plugin. Ici la fonction supprime la tâche cron de Jeedom lors de la désinstallation
 
 Exemple :
@@ -118,7 +118,7 @@ Fichier permettant de demander des informations de configuration à l’utilisat
 
 Le fichier est constitué de :
 
-- La licence comme précèdemment
+- La licence comme précédemment
 - L’inclusion du core de Jeedom
 - La vérification que l’utilisateur est bien connecté (j’inclue le fichier 404 car ce fichier est un fichier de type vue)
 
@@ -192,9 +192,9 @@ if (!isConnect('admin')) {
  ?>
  ````
 
-Une fois sur cette page vous aurez accès en php à toutes les fonctions du core de jeedom (voir [ici](https://www.jeedom.com/doc/documentation/code/) ) ainsi qu’à celles de tous les modules installés donc le vôtre aussi.
+Une fois sur cette page vous aurez accès en php à toutes les fonctions du core de Jeedom (voir [ici](https://www.jeedom.com/doc/documentation/code/) ) ainsi qu’à celles de tous les modules installés donc le vôtre aussi.
 
-Toutes ces pages étant des vues elles utilisent principalement la syntaxe HTML. Pour tout ce qui est présentation, Jeedom se base principalement sur bootstrap donc toute la [documentation](http://getbootstrap.com/) est applicable.
+Toutes ces pages étant des vues elles utilisent principalement la syntaxe HTML. Pour tout ce qui est présentation, Jeedom se base principalement sur Bootstrap donc toute la [documentation](http://getbootstrap.com/) est applicable.
 
 Pour simplifier la création de plugin vous pouvez inclure dans votre page le script javascript de template pour les plugins :
 
@@ -204,7 +204,7 @@ Pour simplifier la création de plugin vous pouvez inclure dans votre page le sc
 
 A mettre tout en bas de votre page et utile uniquement sur la page de configuration de votre plugin. Ce script permet de réduire le javascript obligatoire à une seule fonction (voir partie sur les fichiers JS).
 
-Dans votre page de configuration une syntaxe HTML a été mise en place pour vous simplifier la vie. Donc pour la plupart des plugins vous n’aurez à faire que du HTML pour stocker vos informations en base de données et donc vous en resservir du coté de votre classe.
+Dans votre page de configuration une syntaxe HTML a été mise en place pour vous simplifier la vie. Donc pour la plupart des plugins vous n’aurez à faire que du HTML pour stocker vos informations en base de données et donc vous en resservir du côté de votre classe.
 
 La syntaxe est assez simple: votre élément (input, select…​) doit avoir la classe css eqLogicAttr (ou cmdAttr pour les commandes) et un attribut indiquant le nom de la propriété :
 
@@ -212,7 +212,7 @@ La syntaxe est assez simple: votre élément (input, select…​) doit avoir la
 <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement mail}}"/>
 ````
 
-Là, par exemple, lors du chargement des données jeedom mettra la valeur du nom de l’équipement dans l’input et lors de la sauvegarde récupérera celle-ci pour la remettre en base de données. Petite astuce certaines propriétés sont en fait des chaînes JSON en BDD (cela permet d’avoir vraiment pas mal de liberté pour le plugin), dans ce cas il suffit de faire :
+Là, par exemple, lors du chargement des données Jeedom mettra la valeur du nom de l’équipement dans l’input et lors de la sauvegarde récupèrera celle-ci pour la remettre en base de données. Petite astuce certaines propriétés sont en fait des chaînes JSON en BDD (cela permet d’avoir vraiment pas mal de liberté pour le plugin), dans ce cas il suffit de faire :
 
 ````
 <input class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='fromName' />
@@ -222,11 +222,11 @@ Pour la liste des propriétés des équipements et des commandes c’est ici (po
 
 Dernier point important sur la page de configuration: celle-ci peut contenir autant d’équipements et de commandes que nécessaire. Cependant il y a quelques règles à respecter :
 
-Tous les éléments ayant la classe eqLogicAttr doivent être dans un élément ayant la classe css eqLogic Idem pour les éléments de classe css cmdAttr qui doivent être dans un élément de classe cmd. Toutes les commandes d’un équipement doivent se trouver dans l’élément ayant la classe eqLogic correspondante
+Tous les éléments ayant la classe eqLogicAttr doivent être dans un élément ayant la classe css eqLogic. Idem pour les éléments de classe css cmdAttr qui doivent être dans un élément de classe cmd. Toutes les commandes d’un équipement doivent se trouver dans l’élément ayant la classe eqLogic correspondante.
 
 ## JS
 
-Tous les fichiers JS doivent se trouver dans le dossier JS (facile !!!). Il est conseillé de le nommer du même ID que votre plugin (dans la partie configuration, pour le panel vous faîtes comme vous voulez). Ce fichier JS (celui de la configuration du plugin) doit au minimum contenir une méthode addCmdToTable qui prend en paramètre l’objet commande à ajouter. Voici un exemple simple :
+Tous les fichiers JS doivent se trouver dans le dossier JS (facile !!!). Il est conseillé de le nommer du même ID que votre plugin (dans la partie configuration, pour le panel vous faites comme vous voulez). Ce fichier JS (celui de la configuration du plugin) doit au minimum contenir une méthode addCmdToTable qui prend en paramètre l’objet commande à ajouter. Voici un exemple simple :
 
 ````
 function addCmdToTable(_cmd) {
@@ -322,7 +322,7 @@ Ici on peut remarquer :
 D’autres fonctions javascript peuvent être utilisées :
 
 - ``printEqLogic`` qui prend en paramètre tout l’objet de l’équipement (utile en cas de traitement de données avant de les restituer). Elle est appelée lors de l’affichage des données de l’équipement
-- ``saveEqLogic`` qui prend en paramètre l’objet équipement qui va être sauvegardé en base de données (utile si vous devez faire du traitement avant sauvegarde) Dernière chose, pour les fichiers JS, voici comment les inclure de manière propre sur votre page php :
+- ``saveEqLogic`` qui prend en paramètre l’objet équipement qui va être sauvegardé en base de données (utile si vous devez faire du traitement avant sauvegarde). Dernière chose, pour les fichiers JS, voici comment les inclure de manière propre sur votre page php :
 
 ````
 <?php include_file('desktop', 'weather', 'js', 'weather'); ?>
@@ -342,7 +342,7 @@ Le premier argument donne le dossier dans lequel le trouver (attention c’est l
 
 ## MODAL
 
-Le dossier modal vous permet de stocker vos fichiers php destinés à afficher des modals. Voici comment les appeler à partir de votre page principale (ce code se met dans un fichier javascript) :
+Le dossier modal vous permet de stocker vos fichiers php destinés à afficher des popups modales. Voici comment les appeler à partir de votre page principale (ce code se met dans un fichier javascript) :
 
 On peut voir :
 
@@ -351,9 +351,9 @@ $('#md_modal').dialog({title: "{{Classe du périphérique}}"});
 $('#md_modal').load('index.php?v=d&plugin=zwave&modal=show.class&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
 ````
 
-La première ligne permet de mettre un titre à votre modal
+La première ligne permet de mettre un titre à votre popup modale.
 
-La deuxième ligne charge votre modal et l’affichage. La syntaxe est assez simple : plugin, l’id de votre plugin, modal, le nom de votre modal sans le php et ensuite les paramètres que vous voulez lui passer
+La deuxième ligne charge votre popup modale et l’affichage. La syntaxe est assez simple : plugin, l’id de votre plugin, modal, le nom de votre popup modale sans le php et ensuite les paramètres que vous voulez lui passer.
 
 ## API JS
 
@@ -374,29 +374,29 @@ $('body').delegate('.helpSelectCron','click',function(){
 });
 ````
 
-Quand on clique sur le bouton assistant, on récupère l’input dans lequel écrire puis on appelle l’assistant. Une fois la configuration finie dans l’assistant, le résultat est récuperé puis écrit dans l’input précédemment selectionné
+Quand on clique sur le bouton assistant, on récupère l’input dans lequel écrire puis on appelle l’assistant. Une fois la configuration finie dans l’assistant, le résultat est récupéré puis écrit dans l’input précédemment selectionné.
 
 # Création plugin partie 4 : dossier core
 
 De loin le dossier le plus important de votre plugin, il peut comporter 4 sous dossiers.
 
-Note : tous le long de cette partie l’id de votre plugin sera referencé par : plugin\_id
+Note : tout le long de cette partie l’id de votre plugin sera référencé par : plugin\_id
 
 ## PHP
 
-Contient les fichiers PHP annexes, j’ai pris l’habitude de mettre par exemple un fichier d’inclusion si, bien sur, vous avez plusieurs fichiers de class ou des 3rparty à inclure
+Contient les fichiers PHP annexes, j’ai pris l’habitude de mettre par exemple un fichier d’inclusion si, bien sûr, vous avez plusieurs fichiers de class ou des 3rparty à inclure
 
 ## Template
 
-Qui peut contenir 2 sous-dossiers, dashboard et mobile, c’est un dossier que Jeedom scanne automatiquement à la recherche de widget, donc si vous utilisez des widgets specifiques c’est ici qu’il faut mettre leur fichier HTML
+Qui peut contenir 2 sous-dossiers, dashboard et mobile, c’est un dossier que Jeedom scanne automatiquement à la recherche de widget, donc si vous utilisez des widgets spécifiques c’est ici qu’il faut mettre leur fichier HTML
 
 ## i18n
 
-C’est ici que votre traduction doit se trouver sous forme de fichier json (le mieux et de regarder par exemple le plugin [zwave](https://github.com/jeedom/plugin-openzwave) pour voir la forme du fichier)
+C’est ici que votre traduction doit se trouver sous forme de fichier json (le mieux est de regarder par exemple le plugin [zwave](https://github.com/jeedom/plugin-openzwave) pour voir la forme du fichier)
 
 ## ajax
 
-Ce dossier est pour tout vos fichiers ajax, voici un squelette de fichier ajax :
+Ce dossier est pour tous vos fichiers ajax, voici un squelette de fichier ajax :
 
 ````
 <?php
@@ -502,7 +502,7 @@ class plugin_idCmd extends cmd {
 ?>
 ````
 
-Pour la définition des classes jeedom, je vous invite à consulter ce [site](https://doc.jeedom.com/dev/phpdoc/4.0/)
+Pour la définition des classes Jeedom, je vous invite à consulter ce [site](https://doc.jeedom.com/dev/phpdoc/4.0/)
 
 La seule méthode obligatoire est la méthode d’instance sur la classe cmd execute, voici un exemple avec le plugin S.A.R.A.H :
 
@@ -522,11 +522,11 @@ public function execute($_options = array()) {
   }
   ````
 
-Exemple assez simple mais complet, le principe est le suivant, si la commande est une action ou une info (mais pas en évènement seulement et que son cache est dépassé) alors jeedom appelle cette méthode.
+Exemple assez simple mais complet, le principe est le suivant, si la commande est une action ou une info (mais pas en évènement seulement et que son cache est dépassé) alors Jeedom appelle cette méthode.
 
 Dans notre exemple ici c’est une commande pour faire parler S.A.R.A.H, où le plugin récupère les paramètres dans \$\_options (attention c’est un tableau et ses attributs changent en fonction du sous-type de la commande : color pour un sous-type color, slider pour un sous-type slider, title et message pour un sous-type message et vide pour un sous-type other).
 
-Voila pour la partie obligatoire, voila maintenant ce qui peut etre utilisé à coté (avec exemple) :
+Voilà pour la partie obligatoire, voilà maintenant ce qui peut etre utilisé à côté (avec exemple) :
 
 ### toHtml(\$\_version = 'dashboard')
 
@@ -667,7 +667,7 @@ Là cela permet de mettre la valeur dans le tag, seulement si la commande a bien
 $replace['#temperature#'] = is_object($temperature) ? $temperature->execCmd() : '';
 ````
 
-Passage important: cela permet de récupérer les personalisations faites par l’utilisateur sur la page Générale → Affichage et de les réinjecter dans le template
+Passage important: cela permet de récupérer les personnalisations faites par l’utilisateur sur la page Générale → Affichage et de les réinjecter dans le template
 
 ````
 $parameters = $this->getDisplay('parameters');
@@ -690,9 +690,9 @@ Enfin envoi du html à Jeedom :
 return $html;
 ````
 
-Il faut aussi dire à Jeedom ce que votre widget autorise au niveau de la personalisation. C’est un peu complexe (et encore) mais normalement flexible et simple a mettre en place.
+Il faut aussi dire à Jeedom ce que votre widget autorise au niveau de la personnalisation. C’est un peu complexe (et encore) mais normalement flexible et simple à mettre en place.
 
-Il fonctionne de la même façon sur votre équipement ou commande, c’est un attribut static de la class \$\_widgetPossibility qui doit être un tableau multidimensionnel, mais c’est là que cela se complique si une dimension du tableau est a true ou false. Il considère alors que tout les enfants possibles sont à cette valeur (je vais donner un exemple).
+Il fonctionne de la même façon sur votre équipement ou commande, c’est un attribut static de la class \$\_widgetPossibility qui doit être un tableau multidimensionnel, mais c’est là que cela se complique si une dimension du tableau est à true ou false. Il considère alors que tous les enfants possibles sont à cette valeur (je vais donner un exemple).
 
 En premier lieu les cas où vous devez vous en servir: si dans votre class heritant de eqLogic ou de cmd a une fonction toHtml sinon ce n’est pas la peine de lire la suite.
 
@@ -700,14 +700,14 @@ En premier lieu les cas où vous devez vous en servir: si dans votre class herit
 
 Lors de la création ou la suppression de vos objets (équipement, commande ou autre) dans Jeedom, celui-ci peut appeler plusieurs méthodes avant/après l’action :
 
-- ``preInsert`` ⇒ Méthode appellée avant la création de votre objet
-- ``postInsert`` ⇒ Méthode appellée après la création de votre objet
-- ``preUpdate`` ⇒ Méthode appellée avant la mise à jour de votre objet
-- ``postUpdate`` ⇒ Méthode appellée après la mise à jour de votre objet
-- ``preSave`` ⇒ Méthode appellée avant la sauvegarde (creation et mise à jour donc) de votre objet
-- ``postSave`` ⇒ Méthode appellée après la sauvegarde de votre objet
-- ``preRemove`` ⇒ Méthode appellée avant la supression de votre objet
-- ``postRemove`` ⇒ Méthode appellée après la supression de votre objet
+- ``preInsert`` ⇒ Méthode appelée avant la création de votre objet
+- ``postInsert`` ⇒ Méthode appelée après la création de votre objet
+- ``preUpdate`` ⇒ Méthode appelée avant la mise à jour de votre objet
+- ``postUpdate`` ⇒ Méthode appelée après la mise à jour de votre objet
+- ``preSave`` ⇒ Méthode appelée avant la sauvegarde (création et mise à jour donc) de votre objet
+- ``postSave`` ⇒ Méthode appelée après la sauvegarde de votre objet
+- ``preRemove`` ⇒ Méthode appelée avant la suppression de votre objet
+- ``postRemove`` ⇒ Méthode appelée après la suppression de votre objet
 
 Exemple, toujours avec le plugin weather de la création des commandes ou mise à jour de celles-ci après la sauvegarde (l’exemple est simplifié) :
 
@@ -741,7 +741,7 @@ public function postUpdate() {
 
 Le début est assez standard avec la création d’une commande, la fin est plus intéressante avec la mise en place d’un cron qui va appeler la méthode ``weather::updateWeatherData`` en passant l’id de l’équipement à mettre à jour toute les 30min par défaut.
 
-Ici la methode updateWeatherData (simplifiée aussi) :
+Ici la méthode updateWeatherData (simplifiée aussi) :
 
 ````
 public static function updateWeatherData($_options) {
@@ -754,7 +754,7 @@ public static function updateWeatherData($_options) {
 }
 ````
 
-On voit ici que lors de l’appel on recupère l’équipement concerné puis on exécute les commandes pour recupérer les valeurs et mettre à jour celles-ci si nécessaire.
+On voit ici que lors de l’appel on recupère l’équipement concerné puis on exécute les commandes pour récupérer les valeurs et mettre à jour celles-ci si nécessaire.
 
 Partie très importante :
 
@@ -764,7 +764,7 @@ $weather->checkAndUpdateCmd($cmd,$cmd->execute());
 
 Au moment de la fonction ``checkAndUpdateCmd`` (qui permet de signaler à Jeedom une nouvelle mise à jour de la valeur, avec déclenchement de toutes les actions qui doivent être faites : mise à jour du dashboard, vérification des scénarios…​),
 
-Pour la classe commande, un petit truc à savoir si vous utilisez le template js de base. Lors de l’envoi de l’équipment Jeedom fait du différentiel sur les commandes et va supprimer celles qui sont en base mais pas dans la nouvelle définition de l’équipement. Voilà comment l’éviter :
+Pour la classe commande, un petit truc à savoir si vous utilisez le template js de base. Lors de l’envoi de l’équipement, Jeedom fait du différentiel sur les commandes et va supprimer celles qui sont en base mais pas dans la nouvelle définition de l’équipement. Voilà comment l’éviter :
 
 ````
 public function dontRemoveCmd() {
@@ -782,6 +782,6 @@ $eqLogic->batteryStatus(56);
 ````
 
 - Sur les commandes au moment de l’ajout d’une valeur Jeedom applique la méthode d’instance ``formatValue($_value)`` qui, en fonction du sous-type, peut la remettre en forme (en particulier pour les valeurs binaires)
-- ne faites JAMAIS une méthode dans la class héritant de cmd s’appellant : execCmd ou event
-- si dans la configuration de votre commande vous avez renseigné returnStateTime (en minute) et returnStateValue, Jeedom changera automatique la valeur de votre commande par returnStateValue au bout de X minute(s)
-- toujours pour la commande vous pouvez utiliser addHistoryValue pour forcer la mise en historique (attention votre commande doit être historisée)
+- Ne faites JAMAIS une méthode dans la class héritant de cmd s’appelant : execCmd ou event
+- Si dans la configuration de votre commande vous avez renseigné returnStateTime (en minute) et returnStateValue, Jeedom changera automatiquement la valeur de votre commande par returnStateValue au bout de X minute(s)
+- Toujours pour la commande vous pouvez utiliser addHistoryValue pour forcer la mise en historique (attention votre commande doit être historisée)
